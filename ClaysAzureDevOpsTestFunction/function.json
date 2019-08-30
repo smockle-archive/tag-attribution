@@ -1,0 +1,11 @@
+{
+  "bindings": [
+    {
+      "name": "payload",
+      "type": "serviceBusTrigger",
+      "direction": "in",
+      "queueName": "clays-azure-devops-test-queue",
+      "connection": "Clays_Azure_DevOps_Test_SERVICEBUS"
+    }
+  ]
+}
