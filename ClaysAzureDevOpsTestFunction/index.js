@@ -5,6 +5,7 @@ git.plugins.set("fs", fs);
 
 module.exports = async function(context, payload) {
         context.log("JavaScript ServiceBus queue trigger function processed message:", payload);
+        const pushedBy = payload && payload.resource && payload.resource.pushedBy && payload.resource.pushedBy.displayName;
         // Clone the repo (fetches tags)
         try {
             await git.clone({
@@ -24,11 +25,10 @@ module.exports = async function(context, payload) {
         context.log("Number of tags detected:", (tags || []).length);
         if (!tags || tags.length === 0) {
             // No tags!
-            context.log("The remote is tag-free!");
+            context.log("The remote is tag-free! Pushed by:", pushedBy);
             return;
         }
         // Oh no, tags!
-        const pushedBy = payload && payload.resource && payload.resource.pushedBy && payload.resource.pushedBy.displayName;
         context.log("Tags were detected after this person pushed:", pushedBy);
         try {
             const slackResponse = await fetch(process.env.SLACK_WEBHOOK_URL, {
