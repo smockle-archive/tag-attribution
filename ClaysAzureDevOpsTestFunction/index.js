@@ -1,3 +1,4 @@
+const fetch = require("node-fetch");
 const git = require("isomorphic-git");
 const fs = require("fs");
 git.plugins.set("fs", fs);
@@ -32,9 +33,25 @@ module.exports = async function(context, payload) {
                 singleBranch: true
             });
             context.log("Tags were detected after this person pushed:", pushedBy);
+            const slackResponse = await fetch(process.env.SLACK_WEBHOOK_URL, {
+                method: 'POST',
+                body: JSON.stringify({
+                    text: `Tags were detected after this person pushed: ${pushedBy}`
+                })
+            });
+            const slackResponseText = await slackResponse.text();
+            context.log(slackResponseText);
         } catch (error) {
             if (error.code === "ResolveRefError") {
                 context.log("The remote is tag-free!");
+                const slackResponse = await fetch(process.env.SLACK_WEBHOOK_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        text: "The remote is tag-free!"
+                    })
+                });
+                const slackResponseText = await slackResponse.text();
+                context.log(slackResponseText);
             } else {
                 context.log.error(error);
             }

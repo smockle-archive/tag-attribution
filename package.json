@@ -9,7 +9,8 @@
     "test": "echo \"No tests yet...\""
   },
   "dependencies": {
-    "isomorphic-git": "^0.64.6"
+    "isomorphic-git": "^0.64.6",
+    "node-fetch": "^2.6.0"
   },
   "devDependencies": {}
 }
