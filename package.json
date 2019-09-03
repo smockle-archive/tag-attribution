@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "isomorphic-git": "^0.64.6",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "rimraf": "^3.0.0"
   },
   "devDependencies": {}
 }

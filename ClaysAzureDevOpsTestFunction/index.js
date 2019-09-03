@@ -1,4 +1,5 @@
 const fetch = require("node-fetch");
+const rimraf = require("rimraf");
 const git = require("isomorphic-git");
 const fs = require("fs");
 git.plugins.set("fs", fs);
@@ -6,6 +7,12 @@ git.plugins.set("fs", fs);
 module.exports = async function(context, payload) {
         context.log("JavaScript ServiceBus queue trigger function processed message:", payload);
         const pushedBy = payload && payload.resource && payload.resource.pushedBy && payload.resource.pushedBy.displayName;
+        // Clean-up previous clones (if any)
+        try {
+            rimraf.sync("./appcenter");
+        } catch (error) {
+            context.log.error(error);
+        }
         // Clone the repo (fetches tags)
         try {
             await git.clone({
