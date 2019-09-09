@@ -1,4 +1,4 @@
-const fn = require("./ClaysAzureDevOpsTestFunction/index");
+const fn = require("./TagAttribution/index");
 const context = {};
 context.log = console.log.bind(console);
 context.log.error = console.error.bind(console);

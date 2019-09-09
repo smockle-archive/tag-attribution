@@ -37,16 +37,18 @@ module.exports = async function(context, payload) {
         }
         // Oh no, tags!
         context.log("Tags were detected after this person pushed:", pushedBy);
-        try {
-            const slackResponse = await fetch(process.env.SLACK_WEBHOOK_URL, {
-                method: 'POST',
-                body: JSON.stringify({
-                    text: `Tags were detected after this person pushed: ${pushedBy}`
-                })
-            });
-            const slackResponseText = await slackResponse.text();
-            context.log(slackResponseText);
-        } catch (error) {
-            context.log.error(error);
+        if (process.env.SLACK_WEBHOOK_URL) {
+            try {
+                const slackResponse = await fetch(process.env.SLACK_WEBHOOK_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        text: `Tags were detected after this person pushed: ${pushedBy}`
+                    })
+                });
+                const slackResponseText = await slackResponse.text();
+                context.log(slackResponseText);
+            } catch (error) {
+                context.log.error(error);
+            }
         }
 };
